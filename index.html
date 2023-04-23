@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OBJ Food Orakel</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik Pixels">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Indie Flower">
+    <style>
+        h1 { font-family: 'Rubik Pixels' }
+        h2 { font-family: 'Pacifico' }
+        p {
+            font-family: 'Indie Flower';
+            font-size: 18px;
+        }
+
+        #choose-food {
+            display: none;
+        }
+
+        .centre {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .footer {
+            font-family: 'Indie Flower';
+            font-size: 24px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding-bottom: 0px;
+            width: 85%;
+            color: gray;
+            margin-bottom: auto;
+            margin-right: 10px;
+            opacity: 0.5;
+            text-align: right;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+          window.setTimeout(function(){
+            document.getElementById('choose-food').style.display = 'block';
+          }, 1234);
+        };
+    </script>
+    <script>
+        function showFood(){
+            let food = document.getElementById("food");
+            food.removeAttribute("hidden");
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2023.03.1/pyscript.css" />
+    <script defer src="https://pyscript.net/releases/2023.03.1/pyscript.js"></script>
+</head>
+<body>
+    <h1 class="centre">OBJ Daily Food Choice Orakel (Beta&nbsp;Test)</h1>
+    <py-config src="./pyscript.toml"></py-config>
+    <py-script src="./main.py"></py-script>
+    <button id="choose-food" class="centre" onclick="showFood()">Was essen wir heute?</button>
+    <div id="food" hidden>
+        <h2 id="name" class="centre"></h2>
+        <div id="menu-url" class="centre"></div>
+        <p id="image" class="centre"></p>
+        <p id="options"></p>
+        <p id="all-choices"></p>
+        <py-script hidden>choose_food()</py-script>
+    </div>
+    <div class="footer">Version 1.3.1</div>
+</body>
+</html>
