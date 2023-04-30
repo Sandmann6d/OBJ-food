@@ -1,6 +1,7 @@
-import base64
 import datetime
 import hashlib
+from base64 import b64decode
+from random import choice
 from io import BytesIO
 from PIL import Image
 
@@ -190,21 +191,77 @@ def choose_food():
         menu_tag += f'<br><a href="{food_choice["menu2"]}">{food_choice["menu2"]}</a>'
     Element("menu-url").element.innerHTML = menu_tag
     Element("options").write("Gewählt aus den Optionen:")
-    Element("all-choices").element.innerHTML = '  '.join(sorted('⦾'+item['name'].replace(' ', '&nbsp;') for item in FOODS)).replace('⦾'+food_choice["name"].replace(' ', '&nbsp;'), '<b>⦿'+food_choice["name"].replace(' ', '&nbsp;')+'</b>')
-    img_b = base64.b64decode(food_choice["image"])
-    img = Image.open(BytesIO(img_b))
-    display(img, target="image")
+    Element("all-choices").element.innerHTML = '&nbsp;&nbsp; '.join(sorted('⦾'+item['name'].replace(' ', '&nbsp;') for item in FOODS)).replace('⦾'+food_choice["name"].replace(' ', '&nbsp;'), '<b><u>⦿'+food_choice["name"].replace(' ', '&nbsp;')+'</u></b>')
+    display(Image.open(BytesIO(b64decode(food_choice["image"]))), target="image")
+    Element("print-changelogs").remove_class(["cantSeeMe"])
+    Element("feature-request").remove_class(["cantSeeMe"])
 
 
 CHANGELOGS: dict[list[str]] = {
     "1.0.0": ["Initial version."],
     "1.1.0": ["Added delay to button."],
-    "1.2.0": ["Fixed pyscript loading too slow, showing error.",
+    "1.2.0": ["Fixed pyscript loading too slow, showing error on click.",
               "Fixed image not loading due to disabled CORS.",
-              "Natsu Sushi 1 replaced by Addicted to Rock."],
+              "Natsu Sushi 1 replaced by Addicted to Rock.",
+              "Oracle renamed to Orakel to avoid confusion with Oracle."],
     "1.3.0": ["Reformatted Essenslist string to improve readability.",
-              "Added version number.",
-              "Added 1 comment in source code."],
+              "Added 1 comment in source code.",
+              "Added version number."],
     "1.3.1": ["Installed fancy google fonts and centralised elements on page.",
-              "Moved version number to top-right."]
+              "Moved version number to top-right."],
+    "1.3.2": ["Added changelog button.",
+              "Added feature request button and AI that processes the request.",
+              "Moved version number back to bottom-left."],
+    "1.5.0": ["Versioning consistency."]
 }
+
+def print_changelogs():
+    print('\n'.join([69*'#'] + [f"{k}:\n" + '\n'.join(f"\t- {l}" for l in v) for k, v in CHANGELOGS.items()] + [69*'#']))
+
+FEATURE_REQUEST0 = [
+    b'SSBjb25jdXIgd2hvbGUtaGVhcnRlZGx5Lg==',
+    b'UGxlYXNlIGVudGVyIGEgdmFsaWQgcmVxdWVzdC4=',
+    b'U3RhdHVzIENvZGUgNDA0IC0gUmVxdWVzdCBub3QgZm91bmQu',
+    b'JHZ1ZXRpZnkuYWxlcnQuZXJyb3Iubm9SZXF1ZXN0RW50ZXJlZA==',
+    b'Li4uV2hhdD8=',
+    b'VHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOjxicj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDtGaWxlIEZlYXR1cmVSZXF1ZXN0QUksIGluIGZlYXR1cmVfcmVxdWVzdDxicj5yYWlzZSBJbnB1dEVycm9yKE1pbmRSZWFkZXIgaXMgbm90IGluc3RhbGxlZC4p',
+    b'QSBzb2Z0d2FyZSB0ZXN0ZXIgd2Fsa3MgaW50byBhIGJhci4gVGhleSBvcmRlciBhIGJlZXIsIC0xIGJlZXJzLCA1MCBiZWVycywgbnVocml1aCBiZWVycywgTlVMTCBiZWVycy4gVGhlIGJhcm1hbiBoYXBwaWx5IGZ1bGZpbHMgdGhlIG9yZGVycyBoZSBjYW4sIGFuZCBkZWNsaW5lcyB0aGUgb25lcyBoZSBjYW4ndC48YnI+QSBzb2Z0d2FyZSB1c2VyIHdhbGtzIGludG8gdGhlIHNhbWUgYmFyLCBhbmQgYXNrcyB0aGUgYmFybWFuIHdoZXJlIHRoZSB0b2lsZXRzIGFyZS4gVGhlIGJhcm1hbiBleHBsb2RlcywgdGhlIGJhciBidXJucyB0byB0aGUgZ3JvdW5kLCBhbmQgdGhlIGJ1aWxkaW5nIGNvbGxhcHNlcy4=',
+    b'VHdvIHNvZnR3YXJlIHRlc3RlcnMgd2VudCBpbnRvIGEgZGluZXIgYW5kIG9yZGVyZWQgdHdvIGRyaW5rcy4gVGhlbiB0aGV5IHByb2R1Y2VkIHNhbmR3aWNoZXMgZnJvbSB0aGVpciBicmllZmNhc2VzIGFuZCBzdGFydGVkIHRvIGVhdC48YnI+VGhlIG93bmVyIGJlY2FtZSBxdWl0ZSBjb25jZXJuZWQgYW5kIG1hcmNoZWQgb3ZlciBhbmQgdG9sZCB0aGVtLCDigJxZb3UgY2Fubm90IGVhdCB5b3VyIG93biBzYW5kd2ljaGVzIGluIGhlcmUh4oCdPGJyPlRoZSB0ZXN0ZXJzIGxvb2tlZCBhdCBlYWNoIG90aGVyLCBzaHJ1Z2dlZCB0aGVpciBzaG91bGRlcnMgYW5kIHRoZW4gZXhjaGFuZ2VkIHNhbmR3aWNoZXMu',
+    b'VG8gZXJyIGlzIGh1bWFuOyB0byBmaW5kIHRoZSBlcnJvcnMgcmVxdWlyZXMgYSB0ZXN0ZXIu',
+    b'V2h5IGRvIHByb2dyYW1tZXJzIGNvbmZ1c2UgQ2hyaXN0bWFzIHdpdGggSGFsbG93ZWVuPyBCZWNhdXNlIE9DVCAzMSBpcyB0aGUgc2FtZSBhcyBERUMgMjUu',
+]
+
+
+FEATURE_REQUEST1 = [
+    b'V2hhdCBhIHdpbGQgZnJpa2tpbiBpZGVhIHRoaXMgaXMhPGJyPid7fSc=',
+    b'SSBjb25jdXIgd2hvbGUtaGVhcnRlZGx5IHdpdGggeW91ciBzdWdnZXN0aW9uISEhPGJyPid7fSc=',
+    b'QXJlIHlvdSBzdXJlICd7fScgaXMgYSBnb29kIGlkZWE/',
+    b'SSdtIG5vdCBzdXJlIEkgdW5kZXJzdGFuZC4uLiBXaGF0J3MgYSAne30nPw==',
+    b'UGxlYXNlIGVudGVyIGEgdmFsaWQgcmVxdWVzdC48YnI+J3t9Jw==',
+    b'U3RhdHVzIENvZGUgMjAwIC0gT0shPGJyPid7fSc=',
+    b'U3RhdHVzIENvZGUgNDAwIC0gQmFkIHJlcXVlc3QuPGJyPid7fSc=',
+    b'U3RhdHVzIENvZGUgNDE4IC0gSSdtIGEgdGVhcG90IGNbXTxicj4ne30n',
+    b'VGhpcyBpcyBhbiBpbmNyZWRpYmx5IGNvbXBsaWNhdGVkIHJlcXVlc3QuIFdlJ2xsIHNlZSB3aGF0IGNhbiBiZSBkb25lIGFib3V0ICd7fScu',
+    b'SXQgaXMgYmV5b25kIG15IGNhcGFiaWxpdGllcyB0byBkZXRlcm1pbmUgd2hhdCB5b3UgbWVhbiBieSAne30nLg==',
+    b'TWF5IHRoZSBwcm9nZW55IG9mIGhlYXZlbiBsYXVkIHlvdXIgaW5wdXQgZm9yIGFlb25zIHRvIGNvbWUuPGJyPid7fSc=',
+    b'KF5fXikgW29fb10gKF4uXikgKCIuIikgKCQuJCk8YnI+J3t9Jw==',
+    b'VG8gYmUgaG9uZXN0LCAne30nIHNvdW5kcyBtb3JlIGxpa2UgYSBidWcgcmVwb3J0Lg==',
+    b'JHZ1ZXRpZnkuYWxlcnQuZXJyb3IucmVxdWVzdFVucGFyc2FibGU8YnI+J3t9Jw==',
+    b'V2h5LCB5ZXMsIG9mIGNvdXJzZSEgSG93IGNvdWxkIEkgaGF2ZSBldmVyIGZvcmdvdHRlbiBhYm91dCAne30nPyE=',
+    b'Li4uSSdtIHN0YXJ2aW5nIGFmdGVyIHByb2Nlc3NpbmcgYWxsIHRoaXMgdGV4dDo8YnI+J3t9Jw==',
+    b'T2ggbXksIHlvdXIgcHJvcG9zYWwgdG8gJ3t9JyBpcyBicmlsbGlhbnQh',
+    b'U3ludGF4IGVycm9yOiBQbGVhc2UgcmVmb3JtdWxhdGUgeW91ciByZXF1ZXN0IHVzaW5nIERUQSBsYW5ndWFnZS48YnI+J3t9Jw==',
+    b'JHZ1ZXRpZnkuYWxlcnQuZXJyb3IucmVxdWVzdFVucmVhc29uYWJsZTxicj4ne30n',
+    b'SSBhbSBvbmx5IGFibGUgdG8gcHJvY2VzcyByZXF1ZXN0cyB3cml0dGVuIGluIGlhbWJpYyBwZW50YW1ldGVyLjxicj4ne30n',
+    b'VHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOjxicj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDtGaWxlIEZlYXR1cmVSZXF1ZXN0QUksIGluIHJlcXVlc3RfZmVhdHVyZTxicj5yYWlzZSBSdW50aW1lRXJyb3IoVXNlciBpbnB1dCBjcmFzaGVkIHRoZSBlbnRpcmUgc2VydmVyLik8YnI+J3t9Jw==',
+    b'VGhlIG5vdGlvbiBvZiAne30nIGlzIGV2aWRlbmNlIG9mIGhpdGhlcnRvIHVuZmF0aG9tYWJsZSBnZW5pdXMu',
+    b'J3t9JyB3b3VsZCBjZXJ0YWlubHkgYmUgYSBnaWFudCBsZWFwIGZvciBtYW5raW5kIQ==',
+]
+
+def feature_request():
+    try:
+        Element("feature-response").clear()
+        user_request = input().strip()
+        Element("feature-response").element.innerHTML = b64decode(choice([FEATURE_REQUEST0, FEATURE_REQUEST1][bool(user_request)])).decode('utf8').format(user_request)
+    except EOFError:
+        pass
