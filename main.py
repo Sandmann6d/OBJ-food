@@ -202,7 +202,7 @@ CHANGELOGS: dict[list[str]] = {
     "1.1.0": ["Added delay to button."],
     "1.2.0": ["Fixed pyscript loading too slow, showing error on click.",
               "Fixed image not loading due to disabled CORS.",
-              "Natsu Sushi 1 replaced by Addicted to Rock.",
+              "Natsu Sushi 1 replaced with Addicted to Rock.",
               "Oracle renamed to Orakel to avoid confusion with Oracle."],
     "1.3.0": ["Reformatted Essenslist string to improve readability.",
               "Added 1 comment in source code.",
