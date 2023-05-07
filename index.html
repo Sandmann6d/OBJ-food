@@ -12,7 +12,7 @@
         h2 { font-family: 'Pacifico' }
         p {
             font-family: 'Caveat';
-            font-size: 15px;
+            font-size: 16px;
         }
 
         #choose-food {
@@ -21,7 +21,7 @@
 
         #feature-response {
             font-family: 'Inconsolata';
-            font-size: 24;
+            font-size: 20px;
             color: red;
         }
 
@@ -33,7 +33,7 @@
         }
 
         .cantSeeMe {
-            visibility: hidden
+            visibility: hidden;
         }
 
         .ui {
@@ -43,6 +43,8 @@
     </style>
     <script>
         window.onload = function(){
+          document.getElementById("print-changelogs").classList.add("cantSeeMe");
+          document.getElementById("feature-request").classList.add("cantSeeMe");
           window.setTimeout(function(){
             document.getElementById("choose-food").style.display = 'block';
           }, 1234);
@@ -73,15 +75,15 @@
         <h2 id="name" class="centre"></h2>
         <div id="menu-url" class="centre"></div>
         <p id="image" class="centre"></p>
-        <p id="feature-response"></p>
         <p id="options"></p>
         <p id="all-choices"></p>
         <py-script hidden>choose_food()</py-script>
     </div>
-    <div class="ui">
-        Version 1.5.0
-        <button id="print-changelogs" class="cantSeeMe" py-click="print_changelogs()" onclick="disableButton('print-changelogs')">Changelogs</button>
-        <button id="feature-request" class="cantSeeMe" py-click="feature_request()" onclick="disableButton('feature-request')">Feature request</button>
+    <div id="feature-response"></div>
+    <div id="futter" class="ui">
+        Version 1.6.0
+        <button id="print-changelogs" py-click="print_changelogs()" onclick="disableButton('print-changelogs')">Changelogs</button>
+        <button id="feature-request" py-click="feature_request()" onclick="disableButton('feature-request')">Feature request AI</button>
     </div>
 </body>
 </html>
