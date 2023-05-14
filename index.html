@@ -3,26 +3,29 @@
 <head>
     <title>OBJ Food Orakel</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik Pixels">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Caveat">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Foldit">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gloria Hallelujah">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kalam">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Syne Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Special Elite">
     <style>
         h1 { font-family: 'Rubik Pixels' }
-        h2 { font-family: 'Pacifico' }
+        h2 { font-family: 'Gloria Hallelujah' }
         p {
-            font-family: 'Caveat';
+            font-family: 'Kalam';
             font-size: 16px;
-        }
-
-        #choose-food {
-            display: none;
         }
 
         #feature-response {
             font-family: 'Inconsolata';
             font-size: 20px;
             color: red;
+        }
+
+        #sacrilegious {
+            font-family: 'Special Elite';
+            font-size: 20px;
+            color: brown;
         }
 
         .centre {
@@ -37,26 +40,40 @@
         }
 
         .ui {
-            font-family: 'Foldit';
-            font-size: 24px;
+            font-family: 'Syne Mono';
+            font-size: 20px;
         }
     </style>
     <script>
         window.onload = function(){
-          document.getElementById("print-changelogs").classList.add("cantSeeMe");
-          document.getElementById("feature-request").classList.add("cantSeeMe");
-          window.setTimeout(function(){
-            document.getElementById("choose-food").style.display = 'block';
-          }, 1234);
+            document.getElementById("choose-food").classList.add("cantSeeMe");
+            document.getElementById("print-changelogs").classList.add("cantSeeMe");
+            document.getElementById("feature-request").classList.add("cantSeeMe");
+            let rerollButton = document.getElementById("reroll-food");
+            rerollButton.disabled = true;
+            rerollButton.classList.add("cantSeeMe");
+            document.getElementById("confirm-blasphemy").value = "";
         };
-    </script>
-    <script>
+
         function disableButton(btnId){
             document.getElementById(btnId).disabled = true;
-        }
-        function showFood(){
-            document.getElementById("food").hidden = false;
+        };
+        function mainButtonClicked(){
             disableButton("choose-food")
+            window.setTimeout(function(){
+              document.getElementById("reroll-food").disabled = false;
+            }, 12345);
+        };
+        function celestialWarning(){
+            disableButton('reroll-food');
+            document.getElementById("celestial-warning").innerHTML = "In order to proceed, confirm that you desire to oppose the Orakel's decision, and that you will accept any and all responsibility for whatever consequences may arise, by entering below, 'I&nbsp;wish&nbsp;to&nbsp;defy&nbsp;the&nbsp;prophecy.'"
+            document.getElementById("sacrilegious").hidden = false;
+        }
+        function submitHeresy(){
+            disableButton('confirm-blasphemy-button');
+            window.setTimeout(function(){
+              window.scrollBy(0, 200);
+            }, 1234);
         }
     </script>
     <meta charset="UTF-8">
@@ -65,25 +82,34 @@
     <script defer src="https://pyscript.net/releases/2023.03.1/pyscript.js"></script>
 </head>
 <body>
-    <h1 class="centre">OBJ Daily Food Choice Orakel (Beta&nbsp;Test)</h1>
+    <h1 id="orakel" class="centre">OBJ Daily Food Choice Orakel (Beta&nbsp;Test)</h1>
     <py-config src="./pyscript.toml"></py-config>
     <py-script src="./main.py"></py-script>
     <div class="ui">
-        <button id="choose-food" class="centre" onclick="showFood()">Was essen wir heute?</button>
+        <button title="CLICK MEEE!!!" id="choose-food" class="centre" py-click="choose_food()" onclick="mainButtonClicked()">Was essen wir heute?</button>
     </div>
-    <div id="food" hidden>
+    <div id="food">
         <h2 id="name" class="centre"></h2>
         <div id="menu-url" class="centre"></div>
         <p id="image" class="centre"></p>
         <p id="options"></p>
         <p id="all-choices"></p>
-        <py-script hidden>choose_food()</py-script>
+        <py-script hidden>show_button()</py-script>
     </div>
     <div id="feature-response"></div>
+    <div id="sacrilegious" hidden>
+        <div id=celestial-warning></div>
+        <div class="ui">
+            <input title="Choose wisely..." id="confirm-blasphemy" type="text" size=28 value=" "></input>
+            <button title="May the odds forever be in your favour." id="confirm-blasphemy-button" py-click="reroll()" onclick="submitHeresy()">Submit</button>
+        </div>
+        <div id="divine-curse"></div>
+    </div>
     <div id="futter" class="ui">
-        Version 1.6.0
-        <button id="print-changelogs" py-click="print_changelogs()" onclick="disableButton('print-changelogs')">Changelogs</button>
-        <button id="feature-request" py-click="feature_request()" onclick="disableButton('feature-request')">Feature request AI</button>
+        Version 2.0.0
+        <button title="Print the changelogs." id="print-changelogs" py-click="print_changelogs()" onclick="disableButton('print-changelogs')">Changelogs ↓</button>
+        <button title="Suggest something to the AI." id="feature-request" py-click="feature_request()">Feature request AI</button>
+        <button title="Change today's food choice." id="reroll-food" onclick="celestialWarning()">Reroll food</button>
     </div>
 </body>
 </html>
