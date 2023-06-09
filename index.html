@@ -47,33 +47,53 @@
     <script>
         window.onload = function(){
             document.getElementById("choose-food").classList.add("cantSeeMe");
+            let checkbox = document.getElementById("firmenkosten-checkbox");
+            checkbox.classList.add("cantSeeMe");
+            checkbox.checked = true;
+            document.getElementById("firmenkosten-label").classList.add("cantSeeMe");
             document.getElementById("print-changelogs").classList.add("cantSeeMe");
             document.getElementById("feature-request").classList.add("cantSeeMe");
             let rerollButton = document.getElementById("reroll-food");
             rerollButton.disabled = true;
             rerollButton.classList.add("cantSeeMe");
             document.getElementById("confirm-blasphemy").value = "";
+            document.getElementById("firmenkosten-checkbox").addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById("firmenkosten-label").innerHTML = "&nbsp;Firmenkosten";
+                } else {
+                    document.getElementById("firmenkosten-label").innerHTML = "!Firmenkosten";
+                }
+            });
         };
-
         function disableButton(btnId){
             document.getElementById(btnId).disabled = true;
         };
         function mainButtonClicked(){
-            disableButton("choose-food")
-            window.setTimeout(function(){
-              document.getElementById("reroll-food").disabled = false;
+            disableButton("choose-food");
+            document.getElementById("choose-food").title = "Click me no longer.";
+            disableButton("firmenkosten-checkbox");
+            window.setTimeout(function() {
+                document.getElementById("reroll-food").disabled = false;
             }, 12345);
         };
         function celestialWarning(){
-            disableButton('reroll-food');
-            document.getElementById("celestial-warning").innerHTML = "In order to proceed, confirm that you desire to oppose the Orakel's decision, and that you will accept any and all responsibility for whatever consequences may arise, by entering below, 'I&nbsp;wish&nbsp;to&nbsp;defy&nbsp;the&nbsp;prophecy.'"
+            disableButton("reroll-food");
+            document.getElementById("celestial-warning").innerHTML = "In order to proceed, confirm that you desire to oppose the Orakel's decision, and that you will accept any and all responsibility for whatever consequences may arise, by entering below, ‘I&nbsp;wish&nbsp;to&nbsp;defy&nbsp;the&nbsp;prophecy.’";
             document.getElementById("sacrilegious").hidden = false;
+            document.getElementById("confirm-blasphemy").addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    document.getElementById("confirm-blasphemy-button").click()
+                }
+            });
         }
         function submitHeresy(){
-            disableButton('confirm-blasphemy-button');
-            window.setTimeout(function(){
-              window.scrollBy(0, 200);
-            }, 1234);
+            disableButton("confirm-blasphemy-button");
+            document.getElementById("confirm-blasphemy").title = "Thou hast chosen.";
+            for (let i = 0; i < 4; i++) {
+                window.setTimeout(function(){
+                    window.scrollBy(0, 50);
+                }, i*2345);
+            }
         }
     </script>
     <meta charset="UTF-8">
@@ -85,8 +105,9 @@
     <h1 id="orakel" class="centre">OBJ Daily Food Choice Orakel (Beta&nbsp;Test)</h1>
     <py-config src="./pyscript.toml"></py-config>
     <py-script src="./main.py"></py-script>
-    <div class="ui">
-        <button title="CLICK MEEE!!!" id="choose-food" class="centre" py-click="choose_food()" onclick="mainButtonClicked()">Was essen wir heute?</button>
+    <div class="ui centre">
+        <button title="CLICK MEEE!!!" id="choose-food" py-click="choose_food()" onclick="mainButtonClicked()">Was essen wir heute?</button>&nbsp;
+        <input title="2pay||!2pay" type="checkbox" id="firmenkosten-checkbox"><label for="firmenkosten-checkbox" id="firmenkosten-label">&nbsp;Firmenkosten</label>
     </div>
     <div id="food">
         <h2 id="name" class="centre"></h2>
@@ -106,7 +127,7 @@
         <div id="divine-curse"></div>
     </div>
     <div id="futter" class="ui">
-        Version 2.0.0
+        Version 3.0.0
         <button title="Print the changelogs." id="print-changelogs" py-click="print_changelogs()" onclick="disableButton('print-changelogs')">Changelogs ↓</button>
         <button title="Suggest something to the AI." id="feature-request" py-click="feature_request()">Feature request AI</button>
         <button title="Change today's food choice." id="reroll-food" onclick="celestialWarning()">Reroll food</button>
